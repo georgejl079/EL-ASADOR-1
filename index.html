@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#6b0f1a">
+<meta name="description" content="EL ASADOR · Asado chaqueño boliviano en Yacuiba. Cortes selectos, parrilla tradicional y atención por WhatsApp.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>EL ASADOR | Asado Chaqueño Boliviano en Yacuiba</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+--primary: #6b0f1a;
+--primary-dark: #4a0a12;
+--accent: #c9a24b;
+--accent-light: #e0c078;
+--bg: #141414;
+--surface: #1f1f1f;
+--surface-2: #262626;
+--text: #ffffff;
+--dim: #cccccc;
+--muted: #888888;
+--border: #333333;
+--dark: #000000;
+--dark-2: #111111;
+--wa: #25D366;
+--safe-b: env(safe-area-inset-bottom, 0px);
+--header-h: 76px;
+--tab-h: 60px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+font-family: 'Inter', sans-serif;
+background: var(--bg);
+color: var(--text);
+padding-top: var(--header-h);
+padding-bottom: calc(var(--tab-h) + var(--safe-b));
+}
+body.product-open { padding-top: 56px; }
+body.desktop { padding-bottom: 0; padding-top: 0; }
+h1,h2,h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+h1 { font-weight: 700; }
+
+/* Header vino */
+.app-header {
+position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
+background: linear-gradient(180deg, #7a1220 0%, #6b0f1a 100%);
+backdrop-filter: blur(16px);
+border-bottom: 1px solid rgba(0,0,0,0.4);
+box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
+.header-inner { width: 100%; }
+.header-row { display: flex; align-items: center; gap: 10px; padding: 12px 16px; justify-content: space-between; }
+.header-row .logo-btn { flex-shrink: 0; }
+.icon-btn {
+width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.18);
+background: rgba(0,0,0,0.18); border-radius: 50%; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+font-size: 1rem; flex-shrink: 0; color: #fff; transition: 0.2s;
+}
+.icon-btn:hover { background: rgba(0,0,0,0.35); border-color: var(--accent); }
+.logo-btn {
+background: none; border: none; font-family: 'Oswald', sans-serif;
+font-size: 1.5rem; font-weight: 700; letter-spacing: 4px;
+cursor: pointer; flex-shrink: 0; color: #ffffff;
+position: relative; text-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.cart-btn { position: relative; }
+.cart-badge {
+position: absolute; top: 0; right: 0; background: var(--accent); color: #141414;
+font-size: 0.55rem; font-weight: 700; min-width: 17px; height: 17px;
+border-radius: 9px; display: flex; align-items: center; justify-content: center;
+border: 2px solid var(--primary);
+}
+
+/* Vistas */
+.view { display: none; min-height: calc(100vh - var(--header-h) - var(--tab-h)); }
+.view.active { display: block; }
+body.product-open .view:not(#view-product) { display: none !important; }
+body.product-open #view-product { display: block !important; }
+
+/* Menú lateral */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2500; opacity: 0; visibility: hidden; transition: 0.3s; }
+.overlay.show { opacity: 1; visibility: visible; }
+.menu-sidebar { position: fixed; top: 0; left: -100%; width: min(320px, 88vw); height: 100dvh; background: var(--surface); z-index: 2600; transition: left 0.35s cubic-bezier(0.32,0.72,0,1); display: flex; flex-direction: column; box-shadow: 8px 0 32px rgba(0,0,0,0.5); }
+.menu-sidebar.open { left: 0; }
+.menu-head { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.menu-head h2 { font-size: 1.2rem; color: var(--accent); }
+.menu-body { flex: 1; overflow-y: auto; padding: 8px 0 16px; }
+.menu-footer { flex-shrink: 0; padding: 16px 20px calc(16px + var(--safe-b)); border-top: 1px solid var(--border); text-align: center; background: var(--dark); }
+.menu-footer a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s; }
+.menu-footer a:hover { color: var(--accent); }
+.menu-footer strong { color: var(--accent); font-weight: 700; letter-spacing: 1.5px; }
+.mobile-only { display: block; }
+.desktop-only { display: none; }
+.menu-label { padding: 16px 20px 8px; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'Oswald', sans-serif; }
+.menu-link { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border: none; background: none; width: 100%; text-align: left; font-size: 0.9rem; cursor: pointer; color: var(--text); transition: background 0.15s; }
+.menu-link:hover, .menu-link:active { background: var(--border); }
+.menu-link i { width: 20px; color: var(--accent); }
+
+/* Home carrusel */
+.hero-carousel { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+.hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+.hero-slide.active { opacity: 1; }
+.hero-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-slide::after { content:''; position:absolute; inset:0; z-index:1; background: linear-gradient(90deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 38%,rgba(0,0,0,.1) 72%,rgba(0,0,0,.3) 100%), linear-gradient(0deg,rgba(0,0,0,.5),transparent 45%); }
+.hero-slide .hero-content { position:absolute; z-index:3; left:6%; top:50%; transform:translateY(-50%); max-width:520px; color:#fff; }
+.hero-content h1 { font-size:clamp(2.2rem,5vw,4.8rem); line-height:.95; margin-bottom:12px; letter-spacing:1px; text-shadow:0 5px 25px rgba(0,0,0,.6); }
+.hero-content h1 span { color: var(--accent); }
+.hero-content p { max-width:450px; font-size:clamp(.82rem,1.4vw,1rem); line-height:1.55; color:rgba(255,255,255,.85); margin-bottom:20px; }
+.hero-cta { border:0; background: var(--primary); color:#fff; padding:13px 20px; border-radius:5px; font:800 .78rem 'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; cursor:pointer; box-shadow:0 8px 24px rgba(107,15,26,.4); }
+.hero-cta:hover { transform:translateY(-1px); filter:brightness(1.1); }
+.hero-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 2; }
+.hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; padding: 0; cursor: pointer; transition: background 0.2s, width 0.2s; }
+.hero-dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
+
+/* Sección títulos */
+.section-title { padding: 24px 16px 12px; display: flex; justify-content: space-between; align-items: flex-end; max-width: 1200px; margin: 0 auto; }
+.section-title h2 { font-size: 1.4rem; letter-spacing: 1.5px; color: #fff; }
+.section-title h2::first-letter { color: var(--accent); }
+.section-title span { font-size: 0.75rem; color: var(--dim); }
+.link-btn { background: none; border: none; color: var(--accent); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.link-btn i { font-size: 0.65rem; }
+
+/* Categorías carrusel */
+.categories-carousel-section { padding: 0 0 8px; max-width: 1200px; margin: 0 auto; }
+.categories-carousel { display: flex; gap: 18px; overflow-x: auto; padding: 8px 16px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.categories-carousel::-webkit-scrollbar { display: none; }
+.cat-item { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; scroll-snap-align: start; cursor: pointer; border: none; background: none; padding: 0; }
+.cat-item-icon { width: 78px; height: 78px; border-radius: 50%; background: linear-gradient(145deg, #3a3a3a, #1f1f1f); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--accent); position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.1); transition: transform 0.25s ease, box-shadow 0.25s ease; border: 2px solid rgba(255,255,255,0.15); }
+.cat-item:hover .cat-item-icon { transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 28px rgba(107,15,26,0.4), inset 0 2px 4px rgba(255,255,255,0.2); border-color: var(--accent); }
+.cat-item-icon::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3); pointer-events: none; }
+.cat-item-name { font-size: 0.72rem; font-weight: 600; color: #fff; text-align: center; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.2; }
+
+/* ===== BUSCADOR PROFESIONAL ===== */
+.pro-search-section {
+  max-width: 1200px; margin: 0 auto; padding: 4px 16px 20px;
+  position: relative; z-index: 100;
+}
+.pro-search-wrap {
+  position: relative; display: flex; align-items: center;
+  background: linear-gradient(135deg, #232323, #171717);
+  border: 1px solid #3a3a3a; border-radius: 14px; padding: 6px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.pro-search-wrap.focused, .pro-search-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 10px 34px rgba(107,15,26,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.pro-search-icon {
+  width: 46px; height: 46px; flex-shrink: 0; border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.pro-search-input {
+  flex: 1; border: none; outline: none; background: transparent; color: #fff;
+  font-size: 0.95rem; padding: 12px 16px; font-family: 'Inter', sans-serif;
+}
+.pro-search-input::placeholder { color: #777; }
+.pro-search-clear {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%;
+  background: transparent; color: #999; border: none; cursor: pointer;
+  display: none; align-items: center; justify-content: center; font-size: 0.9rem;
+}
+.pro-search-clear.show { display: flex; }
+.pro-search-clear:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.pro-search-btn {
+  width: 46px; height: 46px; flex-shrink: 0; border-radius: 10px;
+  background: var(--accent); color: #141414; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1rem; font-weight: 700; transition: 0.2s;
+}
+.pro-search-btn:hover { filter: brightness(1.1); }
+
+.search-results {
+  position: absolute; left: 16px; right: 16px; top: calc(100% - 12px);
+  background: #1b1b1b; border: 1px solid #3a3a3a; border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  max-height: 420px; overflow-y: auto; z-index: 120;
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+.search-results.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.search-results-head {
+  padding: 12px 16px 8px; font-family: 'Oswald', sans-serif;
+  font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid #2a2a2a;
+}
+.search-result-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+  color: #fff; font-family: inherit; transition: background 0.15s;
+  border-bottom: 1px solid #232323;
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover, .search-result-item.hl { background: rgba(107,15,26,0.35); }
+.search-result-item img {
+  width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+  border: 1px solid #333;
+}
+.search-result-info { flex: 1; min-width: 0; }
+.search-result-info strong {
+  display: block; font-size: 0.82rem; font-family: 'Oswald', sans-serif;
+  text-transform: uppercase; letter-spacing: 0.4px; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-result-info small { font-size: 0.68rem; color: var(--muted); }
+.search-result-price {
+  font-family: 'Oswald', sans-serif; font-weight: 700; color: var(--accent);
+  font-size: 0.85rem; flex-shrink: 0;
+}
+.search-empty {
+  padding: 22px 16px; text-align: center; color: var(--muted); font-size: 0.82rem;
+}
+.search-empty i { color: var(--primary); display: block; font-size: 1.4rem; margin-bottom: 8px; }
+.search-all-btn {
+  display: block; width: 100%; padding: 12px; border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; font-family: 'Oswald', sans-serif; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; font-size: 0.72rem;
+  cursor: pointer;
+}
+.search-all-btn:hover { filter: brightness(1.1); }
+
+/* Tienda */
+.filters { display: flex; gap: 8px; padding: 0 16px 16px; overflow-x: auto; scrollbar-width: none; max-width: 1200px; margin: 0 auto; }
+#shop-filters { position: sticky; top: var(--header-h); z-index: 1500; background: var(--bg); padding-top: 12px; box-shadow: 0 6px 10px -8px rgba(0,0,0,0.5); }
+.filter-chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; padding: 6px 8px 6px 16px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); }
+.filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-chip-btn { border: none; background: none; padding: 0; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 0.8px; color: inherit; white-space: nowrap; }
+.filter-chip-count { font-size: 0.62rem; font-weight: 700; background: rgba(255,255,255,0.1); color: inherit; padding: 3px 8px; border-radius: 100px; font-family: 'Oswald', sans-serif; }
+.filter-chip.active .filter-chip-count { background: rgba(255,255,255,0.25); }
+.filter-chip-share { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.6rem; }
+.filter-chip.active .filter-chip-share { background: rgba(255,255,255,0.25); }
+.card-float-share { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.7); color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; z-index: 2; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 16px 24px; max-width: 1200px; margin: 0 auto; }
+.card { width: 100%; text-align: left; }
+.card-img-btn, .card-info { display: block; width: 100%; border: none; background: none; padding: 0; text-align: left; font-family: inherit; color: inherit; cursor: pointer; }
+.card-img { aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: var(--surface); margin-bottom: 10px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.card-img img { width: 100%; height: 100%; object-fit: cover; }
+.brand-tag { position: absolute; top: 8px; left: 8px; background: var(--accent); color: #141414; font-family: 'Oswald', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; z-index: 2; border-left: 3px solid var(--primary); }
+.card h4 { font-size: 0.85rem; font-weight: 600; line-height: 1.3; margin-bottom: 4px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; }
+.card .sku { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card .row { display: flex; justify-content: space-between; align-items: center; }
+.card .price { font-weight: 700; font-size: 0.9rem; color: var(--accent); font-family: 'Oswald', sans-serif; }
+.card-actions { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+.card-actions-row { display: flex; gap: 6px; }
+.card-btn { width: 100%; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 0 8px; height: 36px; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; font-family: 'Oswald', sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-btn:hover { background: var(--dark); color: var(--accent); }
+.card-btn-wa { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(37,211,102,0.15); color: #25D366; border: 1px solid rgba(37,211,102,0.3); border-radius: 8px; padding: 0 8px; height: 34px; font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; font-family: 'Oswald', sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-icon-btn { width: 34px; height: 34px; flex-shrink: 0; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); font-size: 0.82rem; }
+.card-icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+.card-btn-add {
+flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+background: linear-gradient(135deg, var(--accent), #b8902f);
+color: #141414; border: none; border-radius: 8px; padding: 0 8px; height: 34px;
+font-size: 0.64rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;
+font-family: 'Oswald', sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+transition: filter 0.2s;
+}
+.card-btn-add:hover { filter: brightness(1.08); }
+
+/* Página producto */
+#view-product { padding-bottom: 100px; }
+.pd-topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: rgba(20,20,20,0.98); backdrop-filter: blur(12px); z-index: 2100; border-bottom: 1px solid var(--border); }
+.pd-gallery { background: var(--surface); }
+.pd-main-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
+.pd-thumbs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
+.pd-thumb { flex-shrink: 0; width: 64px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid transparent; cursor: pointer; padding: 0; background: none; }
+.pd-thumb.active { border-color: var(--accent); }
+.pd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.pd-body { padding: 20px 16px; max-width: 720px; margin: 0 auto; }
+.pd-breadcrumb { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: 'Oswald', sans-serif; }
+.pd-breadcrumb button { background: none; border: none; color: var(--accent); cursor: pointer; font-size: inherit; }
+.pd-name { font-size: 1.6rem; line-height: 1.15; margin-bottom: 8px; color: #fff; }
+.pd-sku { font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; }
+.pd-sku code { background: var(--surface); padding: 2px 8px; border-radius: 4px; font-family: monospace; color: var(--accent); }
+.pd-price { font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; font-family: 'Oswald', sans-serif; }
+.pd-stock { font-size: 0.75rem; color: #25D366; margin-bottom: 20px; }
+.pd-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin: 24px 0 16px; }
+.pd-tab { flex: 1; padding: 12px; border: none; background: none; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; font-family: 'Oswald', sans-serif; }
+.pd-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.pd-panel { display: none; font-size: 0.9rem; line-height: 1.7; color: var(--dim); }
+.pd-panel.active { display: block; }
+.detail-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.detail-table td { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.detail-table td:first-child { color: var(--muted); width: 40%; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+.pd-sticky-bar { position: fixed; bottom: calc(var(--tab-h) + var(--safe-b)); left: 0; right: 0; padding: 12px 16px; background: var(--surface); border-top: 1px solid var(--border); z-index: 2050; display: flex; gap: 12px; align-items: center; }
+body.product-open .pd-sticky-bar { bottom: var(--safe-b); }
+.pd-sticky-bar .price-mini { font-weight: 700; font-size: 1rem; flex: 1; color: var(--accent); font-family: 'Oswald', sans-serif; }
+.btn-add { flex: 2; background: var(--primary); color: #fff; border: none; padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Oswald', sans-serif; }
+.btn-add:hover { background: var(--primary-dark); }
+
+/* Nosotros */
+.about-hero { background: linear-gradient(120deg,rgba(0,0,0,.98),rgba(0,0,0,.9)), radial-gradient(circle at 80% 20%,rgba(107,15,26,.4),transparent 45%); color: #fff; padding: 40px 24px; text-align: center; position: relative; overflow: hidden; }
+.about-hero::after { content: 'EL ASADOR'; position: absolute; right: -20px; bottom: -55px; font: 800 6rem/1 'Oswald',sans-serif; color: rgba(107,15,26,.12); letter-spacing: 6px; }
+.about-hero h1 { font-size: 2.2rem; margin-bottom: 8px; color: var(--accent); position: relative; z-index: 1; }
+.about-hero p { color: var(--dim); position: relative; z-index: 1; }
+.about-content { padding: 24px 16px; max-width: 720px; margin: 0 auto; }
+.about-block { margin-bottom: 28px; }
+.about-block h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent); }
+.about-block p { font-size: 0.9rem; line-height: 1.7; color: var(--dim); }
+.about-info { display: grid; gap: 12px; margin-top: 20px; grid-template-columns: 1fr 1fr; }
+.info-card { display: flex; gap: 14px; padding: 16px; background: var(--surface); border-radius: 12px; align-items: flex-start; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.info-card i { color: var(--accent); font-size: 1.1rem; margin-top: 2px; }
+.info-card strong { display: block; font-size: 0.85rem; margin-bottom: 4px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; }
+.info-card span { font-size: 0.8rem; color: var(--dim); }
+
+/* Galería del local */
+.local-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+.local-gallery-item { position: relative; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.35); cursor: pointer; padding: 0; background: none; width: 100%; display: block; }
+.local-gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+.local-gallery-item:hover img { transform: scale(1.06); }
+.local-gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgba(0,0,0,.65)); pointer-events: none; }
+.local-gallery-item span { position: absolute; bottom: 10px; left: 12px; right: 12px; z-index: 2; font-family: 'Oswald', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: #fff; text-align: left; }
+.local-gallery-item:nth-child(1) { grid-column: 1 / -1; aspect-ratio: 16/9; }
+
+/* Reseñas */
+.reviews-section { max-width: 1200px; margin: 0 auto; padding: 8px 16px 32px; }
+.reviews-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6px; }
+.reviews-header h2 { font-size: 1.4rem; letter-spacing: 1.5px; }
+.reviews-header h2::first-letter { color: var(--accent); }
+.reviews-avg { display: flex; align-items: center; gap: 8px; font-family: 'Oswald', sans-serif; }
+.reviews-avg .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.reviews-avg .stars i { color: var(--accent); font-size: 0.8rem; }
+.reviews-avg .count { font-size: 0.7rem; color: var(--muted); }
+.reviews-sub { font-size: 0.78rem; color: var(--dim); margin-bottom: 16px; }
+.reviews-list { display: grid; gap: 12px; margin-bottom: 24px; }
+.review-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.review-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.review-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 0.95rem; flex-shrink: 0; }
+.review-meta strong { display: block; font-size: 0.85rem; color: #fff; font-family: 'Oswald', sans-serif; letter-spacing: 0.4px; }
+.review-meta small { font-size: 0.68rem; color: var(--muted); }
+.review-stars { margin-left: auto; display: flex; gap: 2px; color: var(--accent); font-size: 0.72rem; }
+.review-text { font-size: 0.85rem; line-height: 1.6; color: var(--dim); }
+.reviews-empty { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 24px 0; }
+.review-form { background: linear-gradient(135deg, #1f1f1f, #171717); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.review-form h3 { font-size: 1rem; color: var(--accent); margin-bottom: 14px; }
+.review-form .field { margin-bottom: 12px; }
+.review-form label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-family: 'Oswald', sans-serif; margin-bottom: 6px; }
+.review-form input, .review-form textarea { width: 100%; background: var(--dark); border: 1px solid #3a3a3a; border-radius: 8px; padding: 11px 12px; color: #fff; font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none; resize: vertical; }
+.review-form input:focus, .review-form textarea:focus { border-color: var(--accent); }
+.review-form textarea { min-height: 84px; }
+.star-picker { display: flex; gap: 6px; }
+.star-picker button { background: none; border: none; cursor: pointer; font-size: 1.3rem; color: #555; padding: 0; transition: color 0.15s, transform 0.15s; }
+.star-picker button.active { color: var(--accent); transform: scale(1.08); }
+.review-submit { width: 100%; margin-top: 6px; background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.78rem; cursor: pointer; }
+.review-submit:hover { background: var(--primary-dark); }
+
+/* ===== CARRITO PROFESIONAL ===== */
+.cart-panel {
+position: fixed; top: 0; right: -100%; width: min(420px, 100%); height: 100dvh;
+background: var(--surface); z-index: 2700; transition: right 0.35s;
+display: flex; flex-direction: column;
+box-shadow: -12px 0 40px rgba(0,0,0,0.6);
+}
+.cart-panel.open { right: 0; }
+.cart-head {
+display: flex; justify-content: space-between; align-items: center;
+padding: 18px 18px 14px; border-bottom: 1px solid var(--border);
+background: linear-gradient(180deg, #232323, #1f1f1f);
+flex-shrink: 0;
+}
+.cart-head h2 { color: var(--accent); font-size: 1.15rem; letter-spacing: 1.5px; }
+.cart-head-sub { font-size: 0.68rem; color: var(--muted); margin-top: 2px; font-family: 'Inter', sans-serif; text-transform: none; letter-spacing: 0; }
+.cart-items {
+flex: 1; overflow-y: auto; padding: 12px 14px;
+-webkit-overflow-scrolling: touch;
+}
+.cart-empty {
+text-align: center; padding: 60px 20px; color: var(--muted);
+}
+.cart-empty i { font-size: 2.6rem; color: var(--border); margin-bottom: 14px; display: block; }
+.cart-empty p { font-size: 0.9rem; margin-bottom: 4px; color: var(--dim); }
+.cart-empty small { font-size: 0.75rem; color: var(--muted); }
+
+.cart-item {
+display: flex; gap: 12px; padding: 12px; margin-bottom: 10px;
+background: #232323; border: 1px solid #333; border-radius: 12px;
+position: relative;
+}
+.cart-item-img {
+width: 68px; height: 68px; border-radius: 10px; object-fit: cover;
+flex-shrink: 0; border: 1px solid #3a3a3a; background: #1a1a1a;
+}
+.cart-item-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.cart-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
+.cart-item-name {
+font-family: 'Oswald', sans-serif; font-size: 0.82rem; font-weight: 600;
+text-transform: uppercase; letter-spacing: 0.4px; color: #fff;
+line-height: 1.25; margin-bottom: 2px;
+}
+.cart-item-sku { font-size: 0.64rem; color: var(--muted); margin-bottom: 8px; }
+.cart-item-remove {
+width: 26px; height: 26px; flex-shrink: 0; border-radius: 6px;
+background: rgba(179,0,0,0.15); border: 1px solid rgba(179,0,0,0.35);
+color: #ff6b6b; cursor: pointer; display: flex; align-items: center;
+justify-content: center; font-size: 0.7rem; transition: 0.15s;
+}
+.cart-item-remove:hover { background: rgba(179,0,0,0.35); color: #fff; }
+.cart-item-bottom {
+display: flex; justify-content: space-between; align-items: center;
+margin-top: auto; padding-top: 4px;
+}
+.qty-control {
+display: inline-flex; align-items: center;
+background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 8px;
+overflow: hidden;
+}
+.qty-btn {
+width: 28px; height: 28px; border: none; background: transparent;
+color: var(--accent); cursor: pointer; display: flex; align-items: center;
+justify-content: center; font-size: 0.72rem; transition: background 0.15s;
+}
+.qty-btn:hover { background: #2a2a2a; }
+.qty-btn:disabled { color: #444; cursor: not-allowed; }
+.qty-value {
+min-width: 32px; text-align: center; font-family: 'Oswald', sans-serif;
+font-weight: 700; font-size: 0.82rem; color: #fff;
+padding: 0 2px;
+}
+.cart-item-subtotal {
+font-family: 'Oswald', sans-serif; font-weight: 700;
+color: var(--accent); font-size: 0.9rem; white-space: nowrap;
+}
+
+.cart-footer {
+flex-shrink: 0; padding: 16px 16px calc(16px + var(--safe-b));
+border-top: 1px solid var(--border);
+background: linear-gradient(0deg, #1a1a1a, #1f1f1f);
+}
+.cart-summary-row {
+display: flex; justify-content: space-between; align-items: center;
+font-size: 0.78rem; color: var(--dim); margin-bottom: 6px;
+}
+.cart-summary-row .label { color: var(--muted); }
+.cart-total-row {
+display: flex; justify-content: space-between; align-items: baseline;
+padding-top: 10px; margin-top: 6px; border-top: 1px dashed #333;
+font-family: 'Oswald', sans-serif;
+}
+.cart-total-row span:first-child {
+font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1px; color: #fff;
+}
+.cart-total-row span:last-child {
+font-size: 1.4rem; font-weight: 700; color: var(--accent);
+}
+.btn-wa {
+width: 100%; padding: 15px; background: var(--wa); color: #fff; border: none;
+border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 12px;
+font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;
+font-size: 0.82rem; display: flex; align-items: center; justify-content: center;
+gap: 8px; box-shadow: 0 8px 24px rgba(37,211,102,0.3); transition: 0.2s;
+}
+.btn-wa:hover { filter: brightness(1.08); }
+.btn-wa:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+.cart-clear {
+width: 100%; margin-top: 8px; padding: 10px; background: transparent;
+border: 1px solid #3a3a3a; color: var(--muted); border-radius: 8px;
+font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase;
+letter-spacing: 1px; cursor: pointer; transition: 0.15s;
+}
+.cart-clear:hover { color: #ff6b6b; border-color: rgba(179,0,0,0.4); }
+
+/* Bottom nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(var(--tab-h) + var(--safe-b)); padding-bottom: var(--safe-b); background: var(--surface); border-top: 1px solid var(--border); display: flex; z-index: 2000; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: none; background: none; color: var(--muted); font-size: 0.55rem; font-weight: 600; text-transform: uppercase; cursor: pointer; padding: 6px 2px; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; position: relative; }
+.tab i { font-size: 1.1rem; }
+.tab.active { color: var(--accent); }
+.tab.active i { color: var(--accent); }
+.tab-cart-badge {
+position: absolute; top: 4px; right: calc(50% - 20px);
+background: var(--accent); color: #141414; font-size: 0.5rem; font-weight: 700;
+min-width: 15px; height: 15px; border-radius: 8px; display: flex;
+align-items: center; justify-content: center; border: 1.5px solid var(--surface);
+}
+.toast { position: fixed; bottom: calc(var(--tab-h) + var(--safe-b) + 80px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark); color: var(--accent); padding: 12px 20px; border-radius: 100px; font-size: 0.8rem; z-index: 9999; opacity: 0; transition: 0.3s; pointer-events: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; border: 1px solid var(--accent); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.empty { text-align: center; padding: 48px 20px; color: var(--muted); grid-column: 1 / -1; }
+
+/* WhatsApp flotante (solo Inicio, nunca con carrito abierto) */
+.wa-float-wrap {
+position: fixed; right: 16px; bottom: calc(var(--tab-h) + var(--safe-b) + 20px);
+z-index: 3500; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.25s;
+}
+.wa-float-wrap.show { opacity: 1; visibility: visible; }
+.wa-float-wrap > * { pointer-events: auto; }
+.wa-float-msg { background: var(--surface); color: var(--text); font-size: 0.78rem; line-height: 1.35; padding: 10px 14px; border-radius: 12px 12px 4px 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid #444; max-width: 200px; font-weight: 500; }
+.wa-float-btn { width: 56px; height: 56px; border-radius: 50%; background: var(--wa); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 8px 26px rgba(37,211,102,.3); text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s; }
+.wa-float-btn:hover { transform: scale(1.06); }
+.wa-float-btn:active { transform: scale(0.95); }
+body.product-open .wa-float-wrap { bottom: calc(80px + var(--safe-b)); }
+
+.pd-actions-desktop { display: none; margin-top: 24px; }
+.pd-actions-desktop .btn-add { width: 100%; max-width: 360px; }
+
+/* Footer */
+.site-footer { background: var(--dark); color: #fff; padding: 48px 32px 28px; margin-top: 48px; }
+.site-footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.site-footer h3 { font-size: 1.6rem; letter-spacing: 4px; margin-bottom: 12px; color: var(--accent); }
+.site-footer p { font-size: 0.85rem; opacity: 0.75; line-height: 1.6; color: var(--dim); }
+.site-footer h4 { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; opacity: 0.5; font-family: 'Oswald', sans-serif; color: var(--accent); }
+.site-footer ul { list-style: none; }
+.site-footer li { margin-bottom: 10px; }
+.site-footer button, .site-footer a { background: none; border: none; color: rgba(255,255,255,0.85); font-size: 0.85rem; cursor: pointer; text-decoration: none; font-family: inherit; padding: 0; }
+.site-footer button:hover, .site-footer a:hover { color: var(--accent); }
+.site-footer-bottom { max-width: 1200px; margin: 24px auto 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; opacity: 0.5; }
+.footer-dev { color: rgba(255,255,255,0.55); font-size: 0.75rem; text-decoration: none; transition: color 0.2s; }
+.footer-dev:hover { color: var(--accent); }
+.footer-dev strong { color: rgba(255,255,255,0.9); letter-spacing: 1px; }
+
+/* Modales */
+.pf-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; opacity: 0; visibility: hidden; transition: opacity 0.25s; }
+.pf-modal-overlay.show { opacity: 1; visibility: visible; }
+.pf-modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(0.96); width: min(560px, 92vw); max-height: 88vh; overflow-y: auto; background: #1a1a1a; border-radius: 16px; z-index: 4100; opacity: 0; visibility: hidden; transition: opacity 0.25s, transform 0.25s; }
+.pf-modal.show { opacity: 1; visibility: visible; transform: translate(-50%,-50%) scale(1); }
+.pf-modal-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.pf-modal-thumbs { display: flex; gap: 8px; padding: 12px 22px 0; overflow-x: auto; scrollbar-width: none; }
+.pf-modal-thumbs:empty { display: none; padding: 0; }
+.pf-modal-thumbs::-webkit-scrollbar { display: none; }
+.pf-modal-thumb { flex-shrink: 0; width: 64px; height: 64px; border-radius: 8px; overflow: hidden; border: 2px solid transparent; cursor: pointer; padding: 0; background: none; }
+.pf-modal-thumb.active { border-color: var(--accent); }
+.pf-modal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pf-modal-body { padding: 22px; }
+.pf-modal-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.7); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; color: #fff; }
+.pf-modal-close:hover { color: var(--accent); }
+.pf-modal-cat { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+.pf-modal-body h3 { font-size: 1.3rem; margin-bottom: 10px; color: #fff; }
+.pf-modal-body p.pf-modal-desc { font-size: 0.88rem; line-height: 1.65; color: var(--dim); margin-bottom: 20px; }
+
+/* Desktop */
+@media (min-width: 769px) {
+.mobile-only { display: none !important; }
+.desktop-only { display: block; }
+body { padding-top: 0; padding-bottom: 0; background: var(--bg); }
+body.product-open { padding-top: 0; padding-bottom: 0; }
+.bottom-nav { display: none; }
+.app-header { position: sticky; top: 0; }
+.header-mobile { display: none !important; }
+.header-desktop { display: grid !important; grid-template-columns: 1fr auto 1fr; align-items: center; max-width: 1200px; margin: 0 auto; padding: 20px 24px 22px; gap: 24px; }
+.header-nav-left { display: flex; align-items: center; justify-content: flex-end; gap: 32px; }
+.logo-center { font-size: 2.45rem; justify-self: center; grid-column: 2; color: #ffffff; letter-spacing: 3px; }
+.header-nav-right { display: flex; align-items: center; justify-content: flex-start; gap: 14px; }
+.desktop-nav { display: flex; align-items: center; gap: 32px; }
+.desktop-nav button { background: none; border: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; color: rgba(255,255,255,0.85); padding: 4px 0; position: relative; white-space: nowrap; font-family: 'Oswald', sans-serif; }
+.desktop-nav button:hover { color: var(--accent); }
+.desktop-nav button.active::after { content: ''; position: absolute; bottom: -6px; left: 0; right: 0; height: 2px; background: var(--accent); }
+.wa-float-wrap { bottom: 28px; }
+body.product-open .wa-float-wrap { bottom: 28px; }
+.view { min-height: auto; }
+.hero-carousel { margin: 24px auto 0; border-radius: 12px; max-width: 1200px; aspect-ratio: 2/1; overflow: hidden; }
+.section-title { padding-left: 24px; padding-right: 24px; }
+.grid { grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 0 24px 48px; }
+.about-hero { max-width: 1200px; margin: 24px auto 0; border-radius: 12px; padding: 64px 32px; }
+.about-hero h1 { font-size: 3rem; }
+.about-content { max-width: 860px; padding: 48px 24px 80px; }
+.local-gallery { grid-template-columns: repeat(3, 1fr); }
+.local-gallery-item:nth-child(1) { grid-column: span 2; aspect-ratio: 16/10; }
+.local-gallery-item:nth-child(2) { aspect-ratio: 16/10; }
+#view-product { padding-bottom: 0; }
+.pd-page-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 0; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: start; }
+.pd-gallery { background: transparent; }
+.pd-main-img { border-radius: 8px; aspect-ratio: 4/5; }
+.pd-thumbs { padding: 16px 0; }
+.pd-body { padding: 0; max-width: none; }
+.pd-name { font-size: 2.2rem; }
+.pd-sticky-bar { display: none !important; }
+.pd-actions-desktop { display: block; }
+.cart-panel { max-width: 440px; }
+.toast { bottom: 32px; }
+body.product-open #app-header { display: block !important; }
+.reviews-list { grid-template-columns: 1fr 1fr; }
+.pro-search-section { padding: 4px 24px 20px; }
+.search-results { left: 24px; right: 24px; }
+}
+.header-desktop { display: none; }
+@media (max-width: 768px) {
+.site-footer { display: none; }
+body.product-open .bottom-nav { display: none; }
+body.product-open { padding-bottom: calc(72px + var(--safe-b)); }
+.about-info { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="app-header" id="app-header">
+<div class="header-inner">
+<div class="header-row header-mobile">
+<button type="button" class="logo-btn" onclick="App.go('home')">EL ASADOR</button>
+<div style="display:flex;gap:8px;">
+<button type="button" class="icon-btn" onclick="App.sharePage()" aria-label="Compartir página"><i class="fas fa-share-alt"></i></button>
+<button type="button" class="icon-btn cart-btn" onclick="App.openCart()" aria-label="Bolsa">
+<i class="fas fa-shopping-bag"></i>
+<span class="cart-badge" id="cart-badge">0</span>
+</button>
+</div>
+</div>
+<div class="header-desktop">
+<nav class="desktop-nav header-nav-left">
+<button type="button" data-nav="home" onclick="App.go('home')">Inicio</button>
+<button type="button" data-nav="shop" onclick="App.go('shop')">Menú</button>
+<button type="button" data-nav="about" onclick="App.go('about')">Nosotros</button>
+</nav>
+<button type="button" class="logo-btn logo-center" onclick="App.go('home')">EL ASADOR</button>
+<div class="header-nav-right">
+<button type="button" class="icon-btn" onclick="App.sharePage()" aria-label="Compartir página"><i class="fas fa-share-alt"></i></button>
+<button type="button" class="icon-btn cart-btn" onclick="App.openCart()" aria-label="Bolsa">
+<i class="fas fa-shopping-bag"></i>
+<span class="cart-badge" id="cart-badge-desk">0</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+
+<div class="overlay" id="overlay" onclick="App.closeAll()"></div>
+
+<aside class="menu-sidebar" id="menu-sidebar">
+<div class="menu-head">
+<h2>Menú</h2>
+<button type="button" class="icon-btn" onclick="App.closeMenu()" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+</div>
+<div class="menu-body" id="menu-content"></div>
+<div class="menu-footer">
+<a id="developer-link" href="#" target="_blank" rel="noopener noreferrer">
+Desarrollado por <strong>KEY STUDIO</strong>
+</a>
+</div>
+</aside>
+
+<main id="view-home" class="view active">
+<div class="hero-carousel" id="hero-carousel"></div>
+
+<div class="pro-search-section" id="pro-search-section-home">
+  <div class="pro-search-wrap" id="pro-search-wrap-home">
+    <div class="pro-search-icon"><i class="fas fa-search"></i></div>
+    <input type="search" id="search-input-home" class="pro-search-input" placeholder="Buscar cortes, parrilla, achuras, bebidas..." autocomplete="off" aria-label="Buscar productos">
+    <button type="button" class="pro-search-clear" id="pro-search-clear-home" onclick="App.clearSearch('home')" aria-label="Limpiar búsqueda"><i class="fas fa-times"></i></button>
+    <button type="button" class="pro-search-btn" onclick="App.searchFrom('home')" aria-label="Buscar"><i class="fas fa-arrow-right"></i></button>
+  </div>
+  <div class="search-results" id="search-results-home"></div>
+</div>
+
+<div class="categories-carousel-section">
+  <div class="section-title">
+    <div><h2>Categorías</h2></div>
+    <button type="button" class="link-btn" onclick="App.go('shop')">Ver menú <i class="fas fa-chevron-right"></i></button>
+  </div>
+  <div class="categories-carousel" id="home-cats-carousel"></div>
+</div>
+
+<div class="section-title"><h2>Productos destacados</h2></div>
+<div class="grid" id="home-featured"></div>
+
+<section class="reviews-section">
+  <div class="reviews-header">
+    <h2>Reseñas de clientes</h2>
+    <div class="reviews-avg">
+      <span class="num" id="reviews-avg-num">0.0</span>
+      <span class="stars" id="reviews-avg-stars"></span>
+      <span class="count" id="reviews-avg-count">(0)</span>
+    </div>
+  </div>
+  <p class="reviews-sub">Lo que dicen nuestros clientes sobre EL ASADOR.</p>
+  <div class="reviews-list" id="reviews-list"></div>
+
+  <form class="review-form" id="review-form" onsubmit="App.submitReview(event)">
+    <h3>Dejá tu reseña</h3>
+    <div class="field">
+      <label for="rv-name">Tu nombre</label>
+      <input type="text" id="rv-name" placeholder="Ej: Juan Pérez" required maxlength="60">
+    </div>
+    <div class="field">
+      <label>Tu calificación</label>
+      <div class="star-picker" id="star-picker">
+        <button type="button" data-star="1" aria-label="1 estrella">★</button>
+        <button type="button" data-star="2" aria-label="2 estrellas">★</button>
+        <button type="button" data-star="3" aria-label="3 estrellas">★</button>
+        <button type="button" data-star="4" aria-label="4 estrellas">★</button>
+        <button type="button" data-star="5" aria-label="5 estrellas">★</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="rv-text">Tu comentario</label>
+      <textarea id="rv-text" placeholder="Contanos tu experiencia..." required maxlength="400"></textarea>
+    </div>
+    <button type="submit" class="review-submit">Publicar reseña</button>
+  </form>
+</section>
+</main>
+
+<main id="view-shop" class="view">
+<div class="section-title">
+<div><h2>Menú</h2><span id="shop-count"></span></div>
+</div>
+
+<div class="filters" id="shop-filters"></div>
+
+<div class="pro-search-section" id="pro-search-section-shop">
+  <div class="pro-search-wrap" id="pro-search-wrap-shop">
+    <div class="pro-search-icon"><i class="fas fa-search"></i></div>
+    <input type="search" id="search-input-shop" class="pro-search-input" placeholder="Buscar cortes, parrilla, achuras, bebidas..." autocomplete="off" aria-label="Buscar productos">
+    <button type="button" class="pro-search-clear" id="pro-search-clear-shop" onclick="App.clearSearch('shop')" aria-label="Limpiar búsqueda"><i class="fas fa-times"></i></button>
+    <button type="button" class="pro-search-btn" onclick="App.searchFrom('shop')" aria-label="Buscar"><i class="fas fa-arrow-right"></i></button>
+  </div>
+  <div class="search-results" id="search-results-shop"></div>
+</div>
+
+<div id="shop-categories"></div>
+
+<div class="grid" id="shop-grid"></div>
+</main>
+
+<main id="view-product" class="view">
+<div class="pd-topbar mobile-only" id="pd-topbar">
+<button type="button" class="icon-btn" onclick="App.closeProduct()" aria-label="Volver"><i class="fas fa-arrow-left"></i></button>
+<div style="display:flex;gap:8px;">
+<button type="button" class="icon-btn" onclick="App.shareProduct(App.product && App.product.id)" aria-label="Compartir producto"><i class="fas fa-share-alt"></i></button>
+<button type="button" class="icon-btn cart-btn" onclick="App.openCart()">
+<i class="fas fa-shopping-bag"></i>
+<span class="cart-badge" id="cart-badge-pd">0</span>
+</button>
+</div>
+</div>
+<div class="pd-page-wrap">
+<div class="pd-gallery">
+<img class="pd-main-img" id="pd-main-img" src="" alt="">
+<div class="pd-thumbs" id="pd-thumbs"></div>
+</div>
+<div class="pd-body">
+<p class="pd-breadcrumb">
+<button type="button" onclick="App.go('shop')">Menú</button>
+/ <span id="pd-cat-label"></span>
+</p>
+<h1 class="pd-name" id="pd-name"></h1>
+<p class="pd-sku">SKU: <code id="pd-sku"></code></p>
+<p class="pd-price" id="pd-price"></p>
+<p class="pd-stock"><i class="fas fa-check-circle"></i> Disponible · Calidad garantizada</p>
+<button type="button" class="link-btn" style="margin-bottom:16px;display:flex;align-items:center;gap:6px;" onclick="App.shareProduct(App.product && App.product.id)"><i class="fas fa-share-alt"></i> Compartir producto</button>
+<div class="pd-actions-desktop">
+<button type="button" class="btn-add" onclick="App.addToCart()">Agregar al pedido — <span id="pd-price-btn"></span></button>
+</div>
+<div class="pd-tabs">
+<button type="button" class="pd-tab active" data-tab="desc" onclick="App.switchTab('desc')">Descripción</button>
+<button type="button" class="pd-tab" data-tab="details" onclick="App.switchTab('details')">Detalles</button>
+</div>
+<div class="pd-panel active" id="panel-desc"></div>
+<div class="pd-panel" id="panel-details"></div>
+</div>
+</div>
+<div class="pd-sticky-bar mobile-only">
+<span class="price-mini" id="pd-price-sticky"></span>
+<button type="button" class="btn-add" onclick="App.addToCart()">Agregar al pedido</button>
+</div>
+</main>
+
+<main id="view-about" class="view">
+<div class="about-hero">
+<h1>EL ASADOR</h1>
+<p>Asado chaqueño boliviano · Yacuiba, Bolivia</p>
+</div>
+<div class="about-content" id="about-content"></div>
+</main>
+
+<aside class="cart-panel" id="cart-panel">
+<div class="cart-head">
+<div>
+<h2>Mi pedido</h2>
+<div class="cart-head-sub" id="cart-head-sub">0 productos</div>
+</div>
+<button type="button" class="icon-btn" onclick="App.closeCart()" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+</div>
+<div class="cart-items" id="cart-items"></div>
+<div class="cart-footer">
+<div class="cart-summary-row">
+<span class="label">Productos</span>
+<span id="cart-summary-count">0</span>
+</div>
+<div class="cart-total-row">
+<span>Total estimado</span>
+<span id="cart-total">Bs. 0</span>
+</div>
+<button type="button" class="btn-wa" id="cart-wa-btn" onclick="App.whatsapp()"><i class="fab fa-whatsapp"></i> Pedir por WhatsApp</button>
+<button type="button" class="cart-clear" onclick="App.clearCart()">Vaciar pedido</button>
+</div>
+</aside>
+
+<div class="pf-modal-overlay" id="pf-modal-overlay" onclick="App.closeProjectModal()"></div>
+<div class="pf-modal" id="pf-modal" role="dialog" aria-modal="true">
+<button type="button" class="pf-modal-close" onclick="App.closeProjectModal()" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+<img class="pf-modal-img" id="pf-modal-img" src="" alt="">
+<div class="pf-modal-thumbs" id="pf-modal-thumbs"></div>
+<div class="pf-modal-body">
+<p class="pf-modal-cat" id="pf-modal-cat"></p>
+<h3 id="pf-modal-title"></h3>
+<p class="pf-modal-desc" id="pf-modal-desc"></p>
+<div id="pf-modal-details" style="margin-bottom:20px;"></div>
+<div style="display:flex;gap:10px;">
+<button type="button" class="btn-wa" id="pf-modal-cta" style="margin-top:0;flex:1;"><i class="fab fa-whatsapp"></i> Consultar</button>
+<button type="button" class="card-icon-btn" style="width:48px;height:48px;" id="pf-modal-share" aria-label="Compartir"><i class="fas fa-share-alt"></i></button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer desktop-only">
+<div class="site-footer-inner">
+<div>
+<h3>EL ASADOR</h3>
+<p>Asado chaqueño boliviano. Tradición, sabor y calidad en Yacuiba.</p>
+</div>
+<div>
+<h4>Navegación</h4>
+<ul>
+<li><button type="button" onclick="App.go('home')">Inicio</button></li>
+<li><button type="button" onclick="App.go('shop')">Menú</button></li>
+<li><button type="button" onclick="App.go('about')">Nosotros</button></li>
+</ul>
+</div>
+<div>
+<h4>Contacto</h4>
+<ul>
+<li><button type="button" onclick="App.whatsapp()">WhatsApp: 75177357</button></li>
+<li><span style="opacity:0.85;font-size:0.85rem;">Yacuiba, Bolivia</span></li>
+</ul>
+</div>
+</div>
+<div class="site-footer-bottom">
+<span>© <span id="footer-year"></span> EL ASADOR. Todos los derechos reservados.</span>
+<a id="footer-developer" class="footer-dev" href="#" target="_blank" rel="noopener noreferrer">
+Desarrollado por <strong>KEY STUDIO</strong>
+</a>
+</div>
+</footer>
+
+<div class="wa-float-wrap" id="wa-float-wrap">
+<div class="wa-float-msg">¿Buscas asado chaqueño? ¡Te ayudamos!</div>
+<button type="button" class="wa-float-btn" onclick="App.whatsappHelp()" aria-label="WhatsApp">
+<i class="fab fa-whatsapp"></i>
+</button>
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+<button type="button" class="tab active" data-view="home" onclick="App.go('home')"><i class="fas fa-home"></i><span>Inicio</span></button>
+<button type="button" class="tab" data-view="shop" onclick="App.go('shop')"><i class="fas fa-store"></i><span>Menú</span></button>
+<button type="button" class="tab" data-view="about" onclick="App.go('about')"><i class="fas fa-info-circle"></i><span>Nosotros</span></button>
+<button type="button" class="tab" data-view="cart" onclick="App.openCart()"><i class="fas fa-shopping-bag"></i><span>Pedido</span><span class="tab-cart-badge" id="tab-cart-badge" style="display:none;">0</span></button>
+</nav>
+
+<script>
+const CONFIG = {
+phone: '59175177357',
+developer: { name: 'KEY STUDIO', url: 'https://keystudio.bo' },
+store: {
+name: 'EL ASADOR',
+tagline: 'Asado chaqueño boliviano en Yacuiba',
+story: 'Nacimos en el corazón de Yacuiba con una misión clara: rescatar el auténtico sabor del asado chaqueño. Durante años, hemos perfeccionado nuestras recetas, seleccionando los mejores cortes y utilizando técnicas tradicionales de parrilla que realzan el sabor natural de la carne. Cada plato que servimos es un homenaje a nuestra tierra y a su gente.',
+mission: 'Brindar una experiencia gastronómica inolvidable, donde la calidad, el sabor y la atención al cliente sean los pilares de cada visita. Queremos que cada persona que pruebe nuestro asado chaqueño se lleve un pedacito de la tradición boliviana.',
+hours: 'Lun – Dom: 11:00 – 23:00',
+address: 'Yacuiba, Bolivia',
+email: 'ventas@elasadortarija.bo',
+instagram: '@elasadortarija'
+}
+};
+
+const heroImages = [
+'https://images.unsplash.com/photo-1544025162-d76694265947?w=1800&q=85',
+'https://images.unsplash.com/photo-1558030006-450675393462?w=1800&q=85',
+'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=1800&q=85'
+];
+const categories = [
+{ id: 'cortes', name: 'Cortes', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600', icon: 'fa-drumstick-bite' },
+{ id: 'parrilla', name: 'Parrilla', image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600', icon: 'fa-fire' },
+{ id: 'achuras', name: 'Achuras', image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600', icon: 'fa-utensils' },
+{ id: 'guarniciones', name: 'Guarniciones', image: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=600', icon: 'fa-leaf' },
+{ id: 'bebidas', name: 'Bebidas', image: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=600', icon: 'fa-glass-cheers' },
+{ id: 'postres', name: 'Postres', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600', icon: 'fa-ice-cream' }
+];
+
+const localGallery = [
+{ src: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1100', title: 'Salón principal', desc: 'Un ambiente cálido y chaqueño para disfrutar en familia.' },
+{ src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1100', title: 'Parrilla a la vista', desc: 'Nuestros maestros parrilleros en acción.' },
+{ src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1100', title: 'Mesa servida', desc: 'Cortes selectos y guarniciones tradicionales.' },
+{ src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1100', title: 'Barra y bebidas', desc: 'Refrescos y bebidas para acompañar tu asado.' },
+{ src: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=1100', title: 'Fuego lento', desc: 'La técnica que realza el sabor natural de la carne.' },
+{ src: 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=1100', title: 'Terraza', desc: 'Espacio ideal para compartir al aire libre.' },
+{ src: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1100', title: 'Nuestro equipo', desc: 'Atención personalizada para cada visita.' }
+];
+
+const catLabels = { cortes: 'Cortes', parrilla: 'Parrilla', achuras: 'Achuras', guarniciones: 'Guarniciones', bebidas: 'Bebidas', postres: 'Postres' };
+const catTaglines = {
+cortes: 'Jugosos y sabrosos',
+parrilla: 'Fuego lento',
+achuras: 'Sabor chaqueño',
+guarniciones: 'El acompañamiento perfecto',
+bebidas: 'Para refrescar',
+postres: 'El toque dulce'
+};
+
+const products = [
+{ id: 1, sku: 'EA-COR-001', name: 'Bife de Chorizo', brand: 'EL ASADOR', price: 45, cat: 'cortes',
+img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=900',
+images: ['https://images.unsplash.com/photo-1544025162-d76694265947?w=900','https://images.unsplash.com/photo-1558030006-450675393462?w=900'],
+desc: 'Bife de chorizo jugoso, cocido a la parrilla con especias chaqueñas.',
+description: '<p><strong>Bife de chorizo</strong> jugoso, cocido a la parrilla con especias chaqueñas. Servido con guarnición a elección.</p><p>El corte favorito de la casa.</p>',
+details: { Corte: 'Bife de chorizo', Cocción: 'A la parrilla', Guarnición: 'A elección', Garantía: 'Calidad garantizada' } },
+{ id: 2, sku: 'EA-PAR-002', name: 'Parrillada Mixta', brand: 'EL ASADOR', price: 80, cat: 'parrilla',
+img: 'https://images.unsplash.com/photo-1558030006-450675393462?w=900',
+images: ['https://images.unsplash.com/photo-1558030006-450675393462?w=900'],
+desc: 'Parrillada mixta con cortes de res, cerdo y chorizo chaqueño.',
+description: '<p><strong>Parrillada mixta</strong> con cortes de res, cerdo y chorizo chaqueño. Ideal para compartir.</p><p>Incluye guarniciones tradicionales.</p>',
+details: { Incluye: 'Cortes de res, cerdo y chorizo', Porción: 'Para 2-3 personas', Preparación: 'A la parrilla', Garantía: 'Calidad garantizada' } },
+{ id: 3, sku: 'EA-ACH-003', name: 'Chorizo Chaqueño', brand: 'EL ASADOR', price: 20, cat: 'achuras',
+img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=900',
+images: ['https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=900'],
+desc: 'Chorizo chaqueño artesanal, asado a la parrilla.',
+description: '<p><strong>Chorizo chaqueño</strong> artesanal, asado a la parrilla y servido con guarnición.</p><p>Sabor auténtico de la tradición boliviana.</p>',
+details: { Ingredientes: 'Carne de cerdo, especias chaqueñas', Preparación: 'A la parrilla', Porción: 'Individual', Garantía: 'Calidad garantizada' } },
+{ id: 4, sku: 'EA-GUA-004', name: 'Guarnición Chaqueña', brand: 'EL ASADOR', price: 15, cat: 'guarniciones',
+img: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=900',
+images: ['https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=900'],
+desc: 'Yuca, papas y ensalada fresca, el acompañamiento ideal.',
+description: '<p><strong>Guarnición chaqueña</strong> con yuca, papas y ensalada fresca.</p><p>El acompañamiento perfecto para tu asado.</p>',
+details: { Incluye: 'Yuca, papas y ensalada', Porción: 'Para 2 personas', Preparación: 'Al momento', Garantía: 'Calidad garantizada' } },
+{ id: 5, sku: 'EA-POS-005', name: 'Postre de Chocolate', brand: 'EL ASADOR', price: 12, cat: 'postres',
+img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=900',
+images: ['https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=900'],
+desc: 'Postre de chocolate intenso, perfecto para cerrar con algo dulce.',
+description: '<p><strong>Postre de chocolate</strong> intenso y cremoso, perfecto para cerrar tu comida con algo dulce.</p><p>Preparado con ingredientes de calidad.</p>',
+details: { Ingredientes: 'Chocolate, crema, base', Porción: 'Individual', Preparación: 'Al momento', Garantía: 'Calidad garantizada' } },
+{ id: 6, sku: 'EA-BEB-006', name: 'Refresco Natural', brand: 'EL ASADOR', price: 7, cat: 'bebidas',
+img: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=900',
+images: ['https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=900'],
+desc: 'Refresco natural de frutas, bien frío para acompañar tu comida.',
+description: '<p><strong>Refresco natural</strong> de frutas, bien frío para acompañar tu asado y calmar la sed.</p><p>Disponible en varios sabores.</p>',
+details: { Tipo: 'Jugo natural', Presentación: 'Vaso', Temperatura: 'Bien fría', Garantía: 'Calidad garantizada' } }
+];
+
+const App = {
+view: 'home',
+activeFilter: 'all',
+cart: [],
+product: null,
+currentProjectGallery: null,
+heroIndex: 0,
+heroTimer: null,
+previousView: 'home',
+selectedStars: 5,
+searchIndex: -1,
+_settingHash: false,
+_scrollSaveTimer: null,
+
+loadCart() {
+  try {
+    const raw = JSON.parse(localStorage.getItem('elasadortarija_cart') || '[]');
+    this.cart = raw.map(it => ({
+      id: it.id, sku: it.sku, name: it.name, price: it.price, img: it.img,
+      qty: Number(it.qty) > 0 ? Number(it.qty) : 1
+    }));
+  } catch (e) { this.cart = []; }
+},
+saveCart() {
+  localStorage.setItem('elasadortarija_cart', JSON.stringify(this.cart));
+},
+
+init() {
+this.loadCart();
+this.renderMenu();
+this.renderHero();
+this.renderHome();
+this.renderShop();
+this.renderAbout();
+this.renderReviews();
+this.updateCart();
+this.initStarPicker();
+this.initSearch('home');
+this.initSearch('shop');
+
+const devUrl = CONFIG.developer?.url || '#';
+['developer-link', 'footer-developer'].forEach(id => {
+const el = document.getElementById(id);
+if (el) el.href = devUrl;
+});
+const yearEl = document.getElementById('footer-year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+window.addEventListener('resize', () => this.onResize());
+this.onResize();
+this.setDesktopNav('home');
+window.addEventListener('hashchange', () => this.onHashChange());
+window.addEventListener('scroll', () => this.queueSaveScroll(), { passive: true });
+window.addEventListener('pagehide', () => this.saveScroll());
+
+this.updateWaFloat();
+
+const sharedId = new URLSearchParams(window.location.search).get('producto');
+const sharedCat = new URLSearchParams(window.location.search).get('categoria');
+if (location.hash) {
+this.applyRoute(this.parseHash(), true);
+} else if (sharedId && products.some(p => p.id === Number(sharedId))) {
+this.openProduct(sharedId);
+} else if (sharedCat && categories.some(c => c.id === sharedCat)) {
+this.go('shop', { cat: sharedCat });
+} else {
+history.replaceState(null, '', location.pathname + location.search + '#/');
+}
+},
+
+updateWaFloat() {
+  const wrap = document.getElementById('wa-float-wrap');
+  if (!wrap) return;
+  const cartOpen = document.getElementById('cart-panel')?.classList.contains('open');
+  const isProductOpen = document.body.classList.contains('product-open');
+  const isHome = this.view === 'home';
+  const show = isHome && !isProductOpen && !cartOpen;
+  wrap.classList.toggle('show', show);
+},
+
+/* ===== BUSCADOR ===== */
+initSearch(ctx) {
+  const input = document.getElementById(`search-input-${ctx}`);
+  const results = document.getElementById(`search-results-${ctx}`);
+  const clearBtn = document.getElementById(`pro-search-clear-${ctx}`);
+  const wrap = document.getElementById(`pro-search-wrap-${ctx}`);
+  if (!input || !results) return;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (clearBtn) clearBtn.classList.toggle('show', q.length > 0);
+    this.searchIndex = -1;
+    if (!q) { this.closeSearchResults(ctx); return; }
+    this.renderSearchResults(ctx, q);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    const items = results.querySelectorAll('.search-result-item');
+    if (e.key === 'ArrowDown') {
+      if (!items.length) return;
+      e.preventDefault();
+      this.searchIndex = (this.searchIndex + 1) % items.length;
+      items.forEach((it, i) => it.classList.toggle('hl', i === this.searchIndex));
+      items[this.searchIndex].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      if (!items.length) return;
+      e.preventDefault();
+      this.searchIndex = (this.searchIndex - 1 + items.length) % items.length;
+      items.forEach((it, i) => it.classList.toggle('hl', i === this.searchIndex));
+      items[this.searchIndex].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (this.searchIndex >= 0 && items[this.searchIndex]) {
+        const id = items[this.searchIndex].dataset.id;
+        this.closeSearchResults(ctx);
+        this.openProduct(id);
+      } else {
+        this.searchFrom(ctx);
+      }
+    } else if (e.key === 'Escape') {
+      this.closeSearchResults(ctx);
+      input.blur();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target) && !results.contains(e.target)) {
+      this.closeSearchResults(ctx);
+    }
+  });
+},
+renderSearchResults(ctx, q) {
+  const results = document.getElementById(`search-results-${ctx}`);
+  const lower = q.toLowerCase();
+  const found = products.filter(p =>
+    p.name.toLowerCase().includes(lower) ||
+    p.sku.toLowerCase().includes(lower) ||
+    (catLabels[p.cat] || '').toLowerCase().includes(lower)
+  );
+  if (!found.length) {
+    results.innerHTML = `<div class="search-empty"><i class="fas fa-search"></i>No encontramos resultados para "<strong>${this.escapeHtml(q)}</strong>"</div>`;
+  } else {
+    const list = found.slice(0, 6);
+    results.innerHTML = `
+      <div class="search-results-head">${found.length} resultado${found.length === 1 ? '' : 's'}</div>
+      ${list.map(p => `
+        <button type="button" class="search-result-item" data-id="${p.id}" onclick="App.selectSearchResult(${p.id}, '${ctx}')">
+          <img src="${p.img}" alt="${p.name}">
+          <div class="search-result-info">
+            <strong>${p.name}</strong>
+            <small>${catLabels[p.cat]} · ${p.sku}</small>
+          </div>
+          <span class="search-result-price">Bs. ${p.price}</span>
+        </button>
+      `).join('')}
+      <button type="button" class="search-all-btn" onclick="App.searchFrom('${ctx}')">Ver todos los resultados <i class="fas fa-arrow-right"></i></button>
+    `;
+  }
+  results.classList.add('show');
+},
+selectSearchResult(id, ctx) {
+  this.closeSearchResults(ctx);
+  this.openProduct(id);
+},
+closeSearchResults(ctx) {
+  const results = document.getElementById(`search-results-${ctx}`);
+  if (results) results.classList.remove('show');
+},
+clearSearch(ctx) {
+  const input = document.getElementById(`search-input-${ctx}`);
+  if (input) { input.value = ''; input.focus(); }
+  const clearBtn = document.getElementById(`pro-search-clear-${ctx}`);
+  if (clearBtn) clearBtn.classList.remove('show');
+  this.closeSearchResults(ctx);
+},
+searchFrom(ctx) {
+  const input = document.getElementById(`search-input-${ctx}`);
+  if (!input) return;
+  const q = input.value.trim();
+  this.closeSearchResults(ctx);
+  if (!q) { this.go('shop'); return; }
+  this.onSearch(q);
+  input.value = '';
+  const clearBtn = document.getElementById(`pro-search-clear-${ctx}`);
+  if (clearBtn) clearBtn.classList.remove('show');
+},
+onSearch(q) {
+q = q.trim().toLowerCase();
+if (!q) {
+if (this.view === 'shop') this.renderShopGrid();
+return;
+}
+this.go('shop');
+const found = products.filter(p =>
+p.name.toLowerCase().includes(q) ||
+p.sku.toLowerCase().includes(q) ||
+p.cat.includes(q)
+);
+document.getElementById('shop-categories').style.display = 'none';
+document.getElementById('shop-categories').innerHTML = '';
+document.getElementById('shop-grid').style.display = '';
+this.renderGrid('shop-grid', found);
+document.getElementById('shop-count').textContent = '(' + found.length + ' resultados)';
+},
+
+/* Reseñas */
+loadReviews() {
+  try { return JSON.parse(localStorage.getItem('elasadortarija_reviews') || '[]'); }
+  catch (e) { return []; }
+},
+saveReviews(list) {
+  try { localStorage.setItem('elasadortarija_reviews', JSON.stringify(list)); } catch (e) {}
+},
+renderReviews() {
+  const list = this.loadReviews();
+  const cont = document.getElementById('reviews-list');
+  const avgNum = document.getElementById('reviews-avg-num');
+  const avgStars = document.getElementById('reviews-avg-stars');
+  const avgCount = document.getElementById('reviews-avg-count');
+  if (!cont) return;
+  if (!list.length) {
+    cont.innerHTML = '<p class="reviews-empty">Aún no hay reseñas. ¡Sé el primero en opinar!</p>';
+    if (avgNum) avgNum.textContent = '0.0';
+    if (avgStars) avgStars.innerHTML = '';
+    if (avgCount) avgCount.textContent = '(0)';
+    return;
+  }
+  const avg = list.reduce((s, r) => s + r.stars, 0) / list.length;
+  if (avgNum) avgNum.textContent = avg.toFixed(1);
+  if (avgStars) avgStars.innerHTML = this.starsHtml(Math.round(avg));
+  if (avgCount) avgCount.textContent = '(' + list.length + ')';
+  cont.innerHTML = list.map(r => `
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-avatar">${(r.name || '?').trim().charAt(0).toUpperCase()}</div>
+        <div class="review-meta">
+          <strong>${this.escapeHtml(r.name)}</strong>
+          <small>${new Date(r.date).toLocaleDateString('es-BO', { day:'2-digit', month:'short', year:'numeric' })}</small>
+        </div>
+        <div class="review-stars">${this.starsHtml(r.stars)}</div>
+      </div>
+      <p class="review-text">${this.escapeHtml(r.text)}</p>
+    </div>
+  `).join('');
+},
+starsHtml(n) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += `<i class="fas fa-star" style="opacity:${i <= n ? 1 : 0.25}"></i>`;
+  return s;
+},
+escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+},
+initStarPicker() {
+  const picker = document.getElementById('star-picker');
+  if (!picker) return;
+  picker.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      this.selectedStars = Number(btn.dataset.star);
+      picker.querySelectorAll('button').forEach(b => b.classList.toggle('active', Number(b.dataset.star) <= this.selectedStars));
+    });
+    btn.classList.toggle('active', Number(btn.dataset.star) <= this.selectedStars);
+  });
+},
+submitReview(e) {
+  e.preventDefault();
+  const name = document.getElementById('rv-name').value.trim();
+  const text = document.getElementById('rv-text').value.trim();
+  if (!name || !text || !this.selectedStars) return;
+  const list = this.loadReviews();
+  list.unshift({ name, text, stars: this.selectedStars, date: Date.now() });
+  this.saveReviews(list);
+  document.getElementById('review-form').reset();
+  this.selectedStars = 5;
+  document.querySelectorAll('#star-picker button').forEach(b => b.classList.toggle('active', Number(b.dataset.star) <= 5));
+  this.renderReviews();
+  this.toast('¡Gracias por tu reseña!');
+},
+
+parseHash() {
+const raw = (location.hash || '').replace(/^#\/?/, '');
+const parts = raw.split('/').filter(Boolean);
+if (!parts.length) return { view: 'home' };
+if (parts[0] === 'tienda') return { view: 'shop', cat: parts[1] || null };
+if (parts[0] === 'nosotros') return { view: 'about' };
+if (parts[0] === 'producto' && parts[1]) return { view: 'product', id: parts[1] };
+return { view: 'home' };
+},
+applyRoute(route, isInitialLoad) {
+if (route.view === 'product') {
+if (products.some(p => p.id === Number(route.id))) {
+this.openProduct(route.id, { silent: true });
+} else {
+this.go('home', {}, { silent: true });
+}
+} else {
+this.go(route.view, { cat: route.cat }, { silent: true });
+}
+if (isInitialLoad) this.restoreScroll(route.view);
+},
+onHashChange() {
+if (this._settingHash) { this._settingHash = false; return; }
+this.applyRoute(this.parseHash());
+},
+updateHash(view, cat) {
+let hash;
+if (view === 'home') hash = '#/';
+else if (view === 'shop') hash = (cat && cat !== 'all') ? '#/tienda/' + cat : '#/tienda';
+else if (view === 'about') hash = '#/nosotros';
+else return;
+if (location.hash !== hash) {
+this._settingHash = true;
+location.hash = hash;
+}
+},
+queueSaveScroll() {
+clearTimeout(this._scrollSaveTimer);
+this._scrollSaveTimer = setTimeout(() => this.saveScroll(), 150);
+},
+saveScroll() {
+try {
+const key = document.body.classList.contains('product-open') ? 'product' : this.view;
+const y = document.body.classList.contains('product-open')
+? (document.getElementById('view-product')?.scrollTop || 0)
+: window.scrollY;
+sessionStorage.setItem('elasadortarija_scroll_' + key, String(y));
+} catch (e) {}
+},
+restoreScroll(view) {
+try {
+const y = Number(sessionStorage.getItem('elasadortarija_scroll_' + view) || 0);
+if (!y) return;
+requestAnimationFrame(() => {
+if (view === 'product') {
+const el = document.getElementById('view-product');
+if (el) el.scrollTop = y;
+} else {
+window.scrollTo(0, y);
+}
+});
+} catch (e) {}
+},
+isMobile() { return window.innerWidth < 769; },
+onResize() {
+document.body.classList.toggle('desktop', !this.isMobile());
+if (!this.isMobile() && document.body.classList.contains('product-open')) {
+document.getElementById('app-header').style.display = '';
+}
+},
+go(view, opts = {}, navOpts = {}) {
+this.closeOverlays();
+this.closeSearchResults('home');
+this.closeSearchResults('shop');
+if (view !== 'product') {
+document.body.classList.remove('product-open');
+document.getElementById('app-header').style.display = '';
+}
+this.view = view;
+document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+const el = document.getElementById('view-' + view);
+if (el) el.classList.add('active');
+document.querySelectorAll('.tab').forEach(t => {
+t.classList.toggle('active', t.dataset.view === view);
+});
+if (view === 'shop') {
+if (opts.cat) this.filter(opts.cat);
+else this.renderShopGrid();
+}
+if (!navOpts.silent) {
+if (view === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+if (view === 'about') window.scrollTo({ top: 0 });
+}
+this.setDesktopNav(view);
+if (!navOpts.silent) this.updateHash(view, opts.cat);
+this.updateWaFloat();
+},
+setDesktopNav(view) {
+document.querySelectorAll('.desktop-nav button').forEach(b => {
+b.classList.toggle('active', b.dataset.nav === view);
+});
+},
+openProduct(id, navOpts = {}) {
+const p = products.find(x => x.id === Number(id));
+if (!p) return;
+this.closeOverlays();
+this.closeSearchResults('home');
+this.closeSearchResults('shop');
+this.previousView = document.body.classList.contains('product-open') ? this.previousView : this.view;
+this.product = p;
+document.body.classList.add('product-open');
+document.getElementById('app-header').style.display = this.isMobile() ? 'none' : '';
+document.getElementById('pd-main-img').src = p.images[0];
+document.getElementById('pd-thumbs').innerHTML = p.images.map((src, i) =>
+`<button type="button" class="pd-thumb${i === 0 ? ' active' : ''}" data-idx="${i}" onclick="App.setImage(this)"><img src="${src}" alt=""></button>`
+).join('');
+document.getElementById('pd-cat-label').textContent = catLabels[p.cat];
+document.getElementById('pd-name').textContent = p.name;
+document.getElementById('pd-sku').textContent = p.sku + (p.brand ? ' · Marca: ' + p.brand : '');
+document.getElementById('pd-price').textContent = 'Bs. ' + p.price;
+document.getElementById('pd-price-sticky').textContent = 'Bs. ' + p.price;
+const priceBtn = document.getElementById('pd-price-btn');
+if (priceBtn) priceBtn.textContent = 'Bs. ' + p.price;
+document.getElementById('panel-desc').innerHTML = p.description;
+document.getElementById('panel-details').innerHTML = '<table class="detail-table">' +
+Object.entries(p.details).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('') + '</table>';
+this.switchTab('desc');
+if (!navOpts.silent) {
+document.getElementById('view-product').scrollTop = 0;
+window.scrollTo(0, 0);
+}
+document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+document.getElementById('view-product').classList.add('active');
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+if (!navOpts.silent) {
+this._settingHash = true;
+location.hash = '#/producto/' + p.id;
+}
+this.updateWaFloat();
+},
+closeProduct() {
+document.body.classList.remove('product-open');
+document.getElementById('app-header').style.display = '';
+this.go(this.previousView || 'shop');
+},
+setImage(btn) {
+const idx = Number(btn.dataset.idx);
+const img = btn.querySelector('img');
+if (!img) return;
+document.getElementById('pd-main-img').src = img.src;
+document.querySelectorAll('.pd-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+},
+switchTab(tab) {
+document.querySelectorAll('.pd-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+document.querySelectorAll('.pd-panel').forEach(p => p.classList.remove('active'));
+document.getElementById('panel-' + tab).classList.add('active');
+},
+
+/* ===== CARRITO ===== */
+addToCart(productId, qty = 1) {
+  const p = productId
+    ? products.find(x => x.id === Number(productId))
+    : this.product;
+  if (!p) return;
+  const existing = this.cart.find(it => it.id === p.id);
+  if (existing) existing.qty += qty;
+  else this.cart.push({ id: p.id, sku: p.sku, name: p.name, price: p.price, img: p.img, qty });
+  this.saveCart();
+  this.updateCart();
+  this.toast('Añadido al pedido');
+  if (!productId) setTimeout(() => this.openCart(), 350);
+},
+quickAdd(id) { this.addToCart(id, 1); },
+changeQty(index, delta) {
+  const it = this.cart[index];
+  if (!it) return;
+  it.qty = Math.max(1, it.qty + delta);
+  this.saveCart();
+  this.updateCart();
+},
+setQty(index, value) {
+  const it = this.cart[index];
+  if (!it) return;
+  const n = Math.max(1, Math.min(99, Number(value) || 1));
+  it.qty = n;
+  this.saveCart();
+  this.updateCart();
+},
+removeCart(index) {
+  this.cart.splice(index, 1);
+  this.saveCart();
+  this.updateCart();
+},
+clearCart() {
+  if (!this.cart.length) return;
+  if (!confirm('¿Vaciar todo el pedido?')) return;
+  this.cart = [];
+  this.saveCart();
+  this.updateCart();
+  this.toast('Pedido vaciado');
+},
+cartTotal() { return this.cart.reduce((s, it) => s + it.price * it.qty, 0); },
+cartCount() { return this.cart.reduce((s, it) => s + it.qty, 0); },
+updateCart() {
+  const count = this.cartCount();
+  const total = this.cartTotal();
+  ['cart-badge', 'cart-badge-desk', 'cart-badge-pd'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = count;
+  });
+  const tBadge = document.getElementById('tab-cart-badge');
+  if (tBadge) {
+    tBadge.textContent = count;
+    tBadge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  const sub = document.getElementById('cart-head-sub');
+  if (sub) sub.textContent = count === 0 ? '0 productos' : count === 1 ? '1 producto' : count + ' productos';
+  const sumCount = document.getElementById('cart-summary-count');
+  if (sumCount) sumCount.textContent = count;
+
+  const box = document.getElementById('cart-items');
+  if (!box) return;
+  if (!this.cart.length) {
+    box.innerHTML = `
+      <div class="cart-empty">
+        <i class="fas fa-shopping-bag"></i>
+        <p>Tu pedido está vacío</p>
+        <small>Agregá productos desde el menú para verlos acá.</small>
+      </div>`;
+  } else {
+    box.innerHTML = this.cart.map((it, i) => `
+      <div class="cart-item">
+        <img class="cart-item-img" src="${it.img}" alt="${it.name}">
+        <div class="cart-item-body">
+          <div class="cart-item-top">
+            <div style="flex:1;min-width:0;">
+              <div class="cart-item-name">${this.escapeHtml(it.name)}</div>
+              <div class="cart-item-sku">${it.sku} · Bs. ${it.price} c/u</div>
+            </div>
+            <button type="button" class="cart-item-remove" onclick="App.removeCart(${i})" aria-label="Eliminar">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+          <div class="cart-item-bottom">
+            <div class="qty-control">
+              <button type="button" class="qty-btn" onclick="App.changeQty(${i}, -1)" ${it.qty <= 1 ? 'disabled' : ''} aria-label="Restar">
+                <i class="fas fa-minus"></i>
+              </button>
+              <input class="qty-value" type="number" min="1" max="99" value="${it.qty}"
+                onchange="App.setQty(${i}, this.value)" onblur="App.setQty(${i}, this.value)"
+                aria-label="Cantidad" style="width:38px;background:transparent;border:none;outline:none;text-align:center;">
+              <button type="button" class="qty-btn" onclick="App.changeQty(${i}, 1)" aria-label="Sumar">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="cart-item-subtotal">Bs. ${(it.price * it.qty).toFixed(0)}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+  const totalEl = document.getElementById('cart-total');
+  if (totalEl) totalEl.textContent = 'Bs. ' + total.toFixed(0);
+  const waBtn = document.getElementById('cart-wa-btn');
+  if (waBtn) waBtn.disabled = this.cart.length === 0;
+},
+
+openCart() {
+this.closeMenu();
+document.getElementById('cart-panel').classList.add('open');
+document.getElementById('overlay').classList.add('show');
+document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === 'cart'));
+this.updateWaFloat();
+},
+closeCart() {
+document.getElementById('cart-panel').classList.remove('open');
+document.getElementById('overlay').classList.remove('show');
+this.updateWaFloat();
+},
+openMenu() {
+document.getElementById('menu-sidebar').classList.add('open');
+document.getElementById('overlay').classList.add('show');
+},
+closeMenu() {
+document.getElementById('menu-sidebar').classList.remove('open');
+if (!document.getElementById('cart-panel').classList.contains('open')) {
+document.getElementById('overlay').classList.remove('show');
+}
+},
+closeAll() { this.closeMenu(); this.closeCart(); },
+closeOverlays() {
+this.closeMenu();
+this.closeCart();
+const pfOverlay = document.getElementById('pf-modal-overlay');
+if (pfOverlay && pfOverlay.classList.contains('show')) this.closeProjectModal();
+},
+
+/* Pedido por WhatsApp con pregunta final de disponibilidad y tiempo de entrega */
+whatsapp() {
+const phone = CONFIG.phone;
+if (!this.cart.length) {
+window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent('Hola EL ASADOR, me gustaría más información sobre sus asados chaqueños.'), '_blank');
+return;
+}
+const lines = this.cart.map(it => `• ${it.qty} x ${it.name} (SKU: ${it.sku}) — Bs. ${(it.price * it.qty).toFixed(0)}`).join('\n');
+const total = this.cartTotal().toFixed(0);
+const msg =
+` *PEDIDO EL ASADOR*\n\n` +
+`${lines}\n\n` +
+`*Total estimado: Bs. ${total}*\n\n` +
+`¿Me confirmarían por favor la *disponibilidad* de estos productos y el *tiempo de entrega* estimado? Muchas gracias.`;
+window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+},
+whatsappHelp() {
+const msg = 'Hola EL ASADOR, quiero consultar disponibilidad y promociones de sus productos.';
+window.open('https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent(msg), '_blank');
+},
+toast(msg) {
+const t = document.getElementById('toast');
+t.textContent = msg;
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 2500);
+},
+filter(cat) {
+this.activeFilter = cat;
+document.querySelectorAll('#shop-filters .filter-chip').forEach(b =>
+b.classList.toggle('active', b.dataset.cat === cat)
+);
+if (cat === 'all') {
+document.getElementById('shop-grid').style.display = 'none';
+document.getElementById('shop-grid').innerHTML = '';
+document.getElementById('shop-categories').style.display = '';
+this.renderShopCategories();
+document.getElementById('shop-count').textContent = '(' + products.length + ' productos)';
+} else {
+document.getElementById('shop-categories').style.display = 'none';
+document.getElementById('shop-categories').innerHTML = '';
+document.getElementById('shop-grid').style.display = '';
+const data = products.filter(p => p.cat === cat);
+this.renderGrid('shop-grid', data);
+document.getElementById('shop-count').textContent = '(' + data.length + ' productos)';
+}
+},
+renderShopCategories() {
+const cont = document.getElementById('shop-categories');
+cont.innerHTML = categories.map(c => {
+const catProducts = products.filter(p => p.cat === c.id);
+if (!catProducts.length) return '';
+const latest = catProducts.slice(-4).reverse();
+const tagline = catTaglines[c.id] ? `<span class="cat-eyebrow">${catTaglines[c.id]}</span>` : '';
+return `<div class="cat-section">
+<div class="section-title cat-section-title">
+<div>${tagline}<h2>${c.name}</h2></div>
+<button type="button" class="link-btn" onclick="App.filter('${c.id}')">Ver todo <i class="fas fa-chevron-right"></i></button>
+</div>
+<div class="grid">${latest.map(p => this.productCard(p)).join('')}</div>
+</div>`;
+}).join('');
+},
+renderGrid(id, data) {
+const g = document.getElementById(id);
+g.innerHTML = data.length ? data.map(p => this.productCard(p)).join('') :
+'<p class="empty">No hay productos.</p>';
+},
+/* Ficha de producto: Consultar (WhatsApp) / Agregar / Compartir */
+productCard(p) {
+const brandTag = p.brand ? `<span class="brand-tag">${p.brand}</span>` : '';
+return `<div class="card">
+<button type="button" class="card-img-btn" onclick="App.openProduct(${p.id})" aria-label="Ver ${p.name}">
+<div class="card-img"><img src="${p.img}" alt="${p.name}" loading="lazy">${brandTag}</div>
+</button>
+<button type="button" class="card-info" onclick="App.openProduct(${p.id})">
+<p class="sku">${p.sku}${p.brand ? ' · ' + p.brand : ''}</p>
+<h4>${p.name}</h4>
+<div class="row"><span class="price">Bs. ${p.price}</span><span style="font-size:0.65rem;color:var(--muted);">${catLabels[p.cat]}</span></div>
+</button>
+<div class="card-actions">
+<button type="button" class="card-btn" onclick="event.stopPropagation(); App.consultarProducto(${p.id})"><i class="fab fa-whatsapp"></i> Consultar</button>
+<div class="card-actions-row">
+<button type="button" class="card-btn-add" onclick="event.stopPropagation(); App.quickAdd(${p.id})"><i class="fas fa-cart-plus"></i> Agregar</button>
+<button type="button" class="card-icon-btn" onclick="event.stopPropagation(); App.shareProduct(${p.id})" aria-label="Compartir producto"><i class="fas fa-share-alt"></i></button>
+</div>
+</div>
+</div>`;
+},
+
+/* Consultar por WhatsApp con detalle del producto */
+consultarProducto(id) {
+  const p = products.find(x => x.id === Number(id));
+  if (!p) return;
+  const msg =
+    `Hola EL ASADOR, quisiera consultar por este producto:\n\n` +
+    `• *${p.name}*\n` +
+    `  SKU: ${p.sku}\n` +
+    `  Categoría: ${catLabels[p.cat]}\n` +
+    `  Precio: Bs. ${p.price}\n\n` +
+    `¿Podrían confirmarme *disponibilidad* y *tiempo de entrega*? Gracias.`;
+  window.open('https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent(msg), '_blank');
+},
+
+productUrl(id) {
+const url = new URL(window.location.href);
+url.hash = '';
+url.searchParams.set('producto', id);
+return url.toString();
+},
+async shareProduct(id) {
+const p = products.find(x => x.id === Number(id));
+if (!p) return;
+const url = this.productUrl(id);
+const shareData = { title: p.name + ' · EL ASADOR', text: `Mira este producto de EL ASADOR: ${p.name} — Bs. ${p.price}`, url };
+if (navigator.share) {
+try { await navigator.share(shareData); } catch (e) {}
+return;
+}
+try { await navigator.clipboard.writeText(url); this.toast('Enlace copiado'); }
+catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(shareData.text + ' ' + url), '_blank'); }
+},
+categoryUrl(cat) {
+const url = new URL(window.location.href);
+url.hash = '';
+url.searchParams.delete('producto');
+url.searchParams.set('categoria', cat);
+return url.toString();
+},
+async shareCategory(cat) {
+const url = this.categoryUrl(cat);
+const label = catLabels[cat] || cat;
+const shareData = { title: label + ' · EL ASADOR', text: `Mira los productos de ${label} en EL ASADOR:`, url };
+if (navigator.share) {
+try { await navigator.share(shareData); } catch (e) {}
+return;
+}
+try { await navigator.clipboard.writeText(url); this.toast('Enlace de categoría copiado'); }
+catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(shareData.text + ' ' + url), '_blank'); }
+},
+pageUrl() {
+const url = new URL(window.location.href);
+url.hash = '';
+url.searchParams.delete('producto');
+url.searchParams.delete('categoria');
+return url.toString();
+},
+async sharePage() {
+const url = this.pageUrl();
+const shareData = { title: 'EL ASADOR · Asado chaqueño boliviano', text: 'Mira el menú de EL ASADOR: cortes, parrilla y tradición chaqueña en Yacuiba.', url };
+if (navigator.share) {
+try { await navigator.share(shareData); } catch (e) {}
+return;
+}
+try { await navigator.clipboard.writeText(url); this.toast('Enlace copiado'); }
+catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(shareData.text + ' ' + url), '_blank'); }
+},
+renderMenu() {
+const cats = categories.map(c =>
+`<button type="button" class="menu-link" onclick="App.filter('${c.id}'); App.go('shop'); App.closeMenu();">
+<i class="fas ${c.icon || 'fa-tag'}"></i> ${c.name}
+</button>`
+).join('');
+document.getElementById('menu-content').innerHTML = `
+<p class="menu-label">Categorías</p>${cats}
+<p class="menu-label">Menú</p>
+<button type="button" class="menu-link" onclick="App.go('shop'); App.closeMenu();"><i class="fas fa-store"></i> Ver menú</button>
+<button type="button" class="menu-link" onclick="App.go('about'); App.closeMenu();"><i class="fas fa-info-circle"></i> Sobre EL ASADOR</button>
+<button type="button" class="menu-link" onclick="App.whatsapp(); App.closeMenu();"><i class="fab fa-whatsapp"></i> WhatsApp: 75177357</button>
+<button type="button" class="menu-link" onclick="App.sharePage(); App.closeMenu();"><i class="fas fa-share-alt"></i> Compartir tienda</button>
+`;
+},
+renderHero() {
+const track = document.getElementById('hero-carousel');
+if (!track) return;
+const heroCopy = [
+  { title:'El auténtico <span>asado chaqueño</span>', text:'Tradición, sabor y calidad en Yacuiba.', cta:'Ver menú'},
+  { title:'Carne jugosa <span>y sabrosa</span>', text:'Descubrí los cortes que marcan tendencia.', cta:'Explorar menú'},
+  { title:'Tu antojo. <span>Tu momento.</span>', text:'Renová tu hambre con platos pensados para vos.', cta:'Ver categorías'}
+];
+track.innerHTML = heroImages.map((src, i) => {
+  const c = heroCopy[i] || heroCopy[0];
+  const action = i === 1 ? "App.filter('cortes'); App.go('shop')" : "App.go('shop')";
+  return `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image:url('${src}')"><img src="${src}" alt="EL ASADOR — Asado chaqueño" loading="${i === 0 ? 'eager' : 'lazy'}"><div class="hero-content"><h1>${c.title}</h1><p>${c.text}</p><button type="button" class="hero-cta" onclick="event.stopPropagation();${action}">${c.cta} <i class="fas fa-arrow-right"></i></button></div></div>`;
+}).join('') +
+`<div class="hero-dots">${heroImages.map((_, i) =>
+`<button type="button" class="hero-dot${i === 0 ? ' active' : ''}" data-idx="${i}" onclick="App.goToHeroSlide(${i})" aria-label="Ver imagen ${i + 1}"></button>`
+).join('')}</div>`;
+this.heroIndex = 0;
+this.startHeroAutoplay();
+},
+startHeroAutoplay() {
+if (this.heroTimer) clearInterval(this.heroTimer);
+this.heroTimer = setInterval(() => {
+this.goToHeroSlide((this.heroIndex + 1) % heroImages.length, true);
+}, 4000);
+},
+goToHeroSlide(idx, fromAutoplay) {
+this.heroIndex = idx;
+document.querySelectorAll('#hero-carousel .hero-slide').forEach((el, i) => el.classList.toggle('active', i === idx));
+document.querySelectorAll('#hero-carousel .hero-dot').forEach((el, i) => el.classList.toggle('active', i === idx));
+if (!fromAutoplay) this.startHeroAutoplay();
+},
+renderHome() {
+document.getElementById('home-cats-carousel').innerHTML = categories.map(c =>
+`<button type="button" class="cat-item" onclick="App.filter('${c.id}'); App.go('shop');">
+  <div class="cat-item-icon"><i class="fas ${c.icon || 'fa-tag'}"></i></div>
+  <span class="cat-item-name">${c.name}</span>
+</button>`
+).join('');
+this.renderGrid('home-featured', products.slice(0, 4));
+},
+renderShop() {
+const cats = ['all', ...categories.map(c => c.id)];
+document.getElementById('shop-filters').innerHTML = cats.map(c => {
+const count = c === 'all' ? products.length : products.filter(p => p.cat === c).length;
+const label = c === 'all' ? 'Todos' : catLabels[c];
+const shareBtn = c === 'all' ? '' : `<button type="button" class="filter-chip-share" onclick="event.stopPropagation(); App.shareCategory('${c}')" aria-label="Compartir categoría ${label}"><i class="fas fa-share-alt"></i></button>`;
+return `<div class="filter-chip${c === 'all' ? ' active' : ''}" data-cat="${c}">
+<button type="button" class="filter-chip-btn" onclick="App.filter('${c}')">${label}</button>
+<span class="filter-chip-count">${count}</span>
+${shareBtn}
+</div>`;
+}).join('');
+this.renderShopGrid();
+},
+renderShopGrid() { this.filter(this.activeFilter); },
+
+renderAbout() {
+const s = CONFIG.store;
+document.getElementById('about-content').innerHTML = `
+<div class="about-block"><h3>Nuestra historia</h3><p>${s.story}</p></div>
+<div class="about-block"><h3>Misión</h3><p>${s.mission}</p></div>
+<div class="about-block">
+<h3>Nuestro local</h3>
+<p>Un espacio pensado para disfrutar del auténtico asado chaqueño. Tocá una imagen para verla en grande.</p>
+<div class="local-gallery" id="local-gallery"></div>
+</div>
+<div class="about-block"><h3>¿Por qué elegir EL ASADOR?</h3>
+<div style="display:grid;gap:10px;margin-top:12px;">
+<div class="info-card"><i class="fas fa-check-circle"></i><div><strong>Calidad garantizada</strong><span>Ingredientes frescos y preparación al momento.</span></div></div>
+<div class="info-card"><i class="fas fa-tags"></i><div><strong>Los mejores precios</strong><span>Variedad de platos y combos para cada presupuesto.</span></div></div>
+<div class="info-card"><i class="fas fa-truck"></i><div><strong>Entrega rápida</strong><span>Delivery a domicilio y envíos a todo el país.</span></div></div>
+<div class="info-card"><i class="fas fa-users"></i><div><strong>Atención personalizada</strong><span>Te ayudamos a elegir tu combinación ideal.</span></div></div>
+</div>
+</div>
+<div class="about-info">
+<div class="info-card"><i class="fas fa-clock"></i><div><strong>Horario</strong><span>${s.hours}</span></div></div>
+<div class="info-card"><i class="fas fa-map-marker-alt"></i><div><strong>Ubicación</strong><span>${s.address}</span></div></div>
+<div class="info-card"><i class="fas fa-phone"></i><div><strong>Teléfono</strong><span>75177357</span></div></div>
+<div class="info-card"><i class="fab fa-instagram"></i><div><strong>Instagram</strong><span>${s.instagram}</span></div></div>
+</div>
+`;
+this.renderLocalGallery();
+},
+renderLocalGallery() {
+const cont = document.getElementById('local-gallery');
+if (!cont) return;
+cont.innerHTML = localGallery.map((g, i) => `
+<button type="button" class="local-gallery-item" onclick="App.openGalleryItem(${i})" aria-label="${g.title}">
+<img src="${g.src}" alt="${g.title}" loading="lazy">
+<span>${g.title}</span>
+</button>
+`).join('');
+},
+openGalleryItem(idx) {
+const g = localGallery[idx];
+if (!g) return;
+this.currentProjectGallery = localGallery.map(x => x.src);
+document.getElementById('pf-modal-img').src = g.src;
+document.getElementById('pf-modal-img').alt = g.title;
+document.getElementById('pf-modal-thumbs').innerHTML = localGallery.map((x, i) =>
+`<button type="button" class="pf-modal-thumb${i === idx ? ' active' : ''}" data-idx="${i}" onclick="App.setProjectImage(this)"><img src="${x.src}" alt=""></button>`
+).join('');
+document.getElementById('pf-modal-cat').textContent = 'EL ASADOR · YACUIBA';
+document.getElementById('pf-modal-title').textContent = g.title;
+document.getElementById('pf-modal-desc').textContent = g.desc;
+document.getElementById('pf-modal-details').innerHTML = '';
+document.getElementById('pf-modal-cta').onclick = () => {
+  const msg = `Hola EL ASADOR, vi su local en la web y quiero más información.`;
+  window.open('https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent(msg), '_blank');
+};
+document.getElementById('pf-modal-share').onclick = () => this.sharePage();
+document.getElementById('pf-modal-overlay').classList.add('show');
+document.getElementById('pf-modal').classList.add('show');
+document.body.style.overflow = 'hidden';
+},
+setProjectImage(btn) {
+const idx = Number(btn.dataset.idx);
+if (!this.currentProjectGallery) return;
+document.getElementById('pf-modal-img').src = this.currentProjectGallery[idx];
+document.querySelectorAll('#pf-modal-thumbs .pf-modal-thumb').forEach(t => t.classList.remove('active'));
+btn.classList.add('active');
+const g = localGallery[idx];
+if (g) {
+  document.getElementById('pf-modal-title').textContent = g.title;
+  document.getElementById('pf-modal-desc').textContent = g.desc;
+}
+},
+closeProjectModal() {
+document.getElementById('pf-modal-overlay').classList.remove('show');
+document.getElementById('pf-modal').classList.remove('show');
+document.body.style.overflow = '';
+}
+};
+document.addEventListener('DOMContentLoaded', () => App.init());
+</script>
+</body>
+</html>
